@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-@MapperScan("com.carolyn.mapper")   //指定变成实现类的接口所在的包
+@MapperScan("com.logisticsystembackend.mapper")   //指定变成实现类的接口所在的包
 public class MybatisPlusConfig {
 
     /**
