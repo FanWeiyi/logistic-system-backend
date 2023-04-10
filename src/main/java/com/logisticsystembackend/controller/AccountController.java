@@ -6,8 +6,10 @@ package com.logisticsystembackend.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.api.R;
+import com.logisticsystembackend.common.Result;
 import com.logisticsystembackend.entity.User;
 import com.logisticsystembackend.service.UserService;
+import com.logisticsystembackend.util.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -20,8 +22,8 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 @Slf4j
 public class AccountController {
-//    @Autowired
-//    JwtUtils jwtUtils;
+    @Autowired
+    JwtUtils jwtUtils;
     @Autowired
     UserService userService;
 
@@ -33,7 +35,7 @@ public class AccountController {
 
     @CrossOrigin
     @PostMapping("/login")
-    public R<User> login(@Validated @RequestBody User user){
+    public Result login(@Validated @RequestBody User user , HttpServletResponse httpServletResponse){
         log.info("用户登录信息{}", user.getName()+user.getPassword());
         String name= user.getName();
         //查看名字是否有对应用户
@@ -45,13 +47,19 @@ public class AccountController {
             //查询密码是否一致
             if (user.getPassword().equals(user1.getPassword())){
                 //密码一致，登陆成功
-                return R.ok(user1);
+                //根据id生成jwt
+                String jwt = jwtUtils.generateToken(user1.getUserId());
+                //将jwt放在header上
+                httpServletResponse.setHeader("Authorization",jwt);
+                httpServletResponse.setHeader("Access-Control-Expose-Headers","Authorization");
+                return Result.success(user1);
             }else {
-                return R.failed("密码错误");
+                return Result.fail("密码错误");
             }
         }else {
             //用户不存在
-            return R.failed("用户不存在");
+            return Result.fail("用户不存在");
+
         }
 
     }

@@ -24,7 +24,7 @@ public class Rout implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "rout_id", type = IdType.AUTO)
-    private Integer routId;
+    private Long routId;
 
     private BigDecimal length;
 

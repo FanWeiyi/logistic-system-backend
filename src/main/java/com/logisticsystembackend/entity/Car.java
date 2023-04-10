@@ -23,7 +23,7 @@ public class Car implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "car_id", type = IdType.AUTO)
-    private Integer carId;
+    private Long carId;
 
     private String carplate;
 
