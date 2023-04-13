@@ -11,6 +11,8 @@ import com.logisticsystembackend.entity.User;
 import com.logisticsystembackend.service.UserService;
 import com.logisticsystembackend.util.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -48,7 +50,7 @@ public class AccountController {
             if (user.getPassword().equals(user1.getPassword())){
                 //密码一致，登陆成功
                 //根据id生成jwt
-                String jwt = jwtUtils.generateToken(user1.getUserId());
+                String jwt = jwtUtils.generateToken(user1.getId());
                 //将jwt放在header上
                 httpServletResponse.setHeader("Authorization",jwt);
                 httpServletResponse.setHeader("Access-Control-Expose-Headers","Authorization");
@@ -64,10 +66,11 @@ public class AccountController {
 
     }
 
-//    @GetMapping("/logout")
-//    @RequiresAuthentication
-//    public Result logout(){
-//        SecurityUtils.getSubject().logout();
-//        return Result.success(null);
-//    }
+    @GetMapping("/logout")
+    @RequiresAuthentication
+    public Result logout(){
+        log.info("用户登出");
+        SecurityUtils.getSubject().logout();
+        return Result.success(null);
+    }
 }

@@ -24,8 +24,8 @@ public class Order implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "order_id", type = IdType.AUTO)
-    private Long orderId;
+    @TableId(value = "id", type = IdType.AUTO)
+    private Long id;
 
     private Long customerId;
 

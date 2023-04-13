@@ -23,8 +23,8 @@ public class Rout implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "rout_id", type = IdType.AUTO)
-    private Long routId;
+    @TableId(value = "id", type = IdType.AUTO)
+    private Long id;
 
     private BigDecimal length;
 
